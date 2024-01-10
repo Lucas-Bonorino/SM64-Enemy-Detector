@@ -8,3 +8,4 @@
 4. Mobilidade(canos, plataformas e árvores): 3
 5. Itens Valiosos(moedas, estrelas e baús): 4
 
+[Videos para gerar o dataset](https://drive.google.com/drive/folders/1dxONE6dlFmab1Wi-a1rzSDJgk1iFns5s?usp=sharing)
