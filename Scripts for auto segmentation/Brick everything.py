@@ -22,6 +22,8 @@ def Color_Correction(directory_list, color):
         texture_names=listdir(abspath(directory))
 
         for texture_name in texture_names:
+            if 'png' not in texture_name: continue
+
             texture=cv.imread(f'{directory}\\{texture_name}', flags=cv.IMREAD_UNCHANGED)
             change_color(texture, color)
             cv.imwrite(f'{directory}\\{texture_name}', texture)
