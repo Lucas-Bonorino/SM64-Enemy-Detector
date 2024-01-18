@@ -2,7 +2,7 @@
 
 ## Esquema das Classes - Cor do Ground truth:
 
-1. Mario: 0 - \color{lime}Verde Puro
+1. $${\color{lime}Mario: 1 - Verde Puro}$$
 2. Goomba: 1 - <span style="color: red;"> Vermelho Puro </span>
 3. Chain Chomp : 2 - <span style="color: crimson;"> Carmesin (220, 20, 60) </span>
 3. Bobomb: 3
