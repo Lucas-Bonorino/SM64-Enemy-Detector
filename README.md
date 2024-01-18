@@ -1,4 +1,4 @@
-# Super-MarioNet-64
+# Super Mario 64 Enemy Detector
 
 ## Esquema das Classes - Cor do Ground truth:
 
