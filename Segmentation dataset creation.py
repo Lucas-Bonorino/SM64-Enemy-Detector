@@ -3,9 +3,9 @@ from numba import njit
 import cv2 as cv
 from os import makedirs
 
-SAMPLE_RATE=5
+SAMPLE_RATE=1
 
-path='./MarioNet64 segmetation'
+path='./MarioNet64 segmentation'
 
 try:
     makedirs(path)
@@ -24,7 +24,7 @@ enemy_color=np.uint8([0, 0, 255, 2])
 danger_color=np.uint8([255, 0, 255, 3])
 
 colors=[enemy_color,  danger_color,  ally_color]
-thresholds=[50, 150, 150]
+thresholds=[10, 10, 10]
 
 class_colors_and_thresholds=list(zip(colors,thresholds))
 
@@ -79,7 +79,7 @@ while(video.isOpened()):
 
         dataset_image=np.where(dataset_image==0, 5, dataset_image-1)
      
-        cv.imwrite(f'MarioNet64 segmetation/frame {frame_num}.jpg', dataset_image)
+        cv.imwrite(f'MarioNet64 segmentation/frame {frame_num}.jpg', dataset_image)
         cv.imwrite(f'MarioNet64 raw_frames/frame {frame_num}.jpg', frame)
         frame_num+=1
 

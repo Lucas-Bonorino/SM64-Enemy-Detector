@@ -2,10 +2,13 @@
 
 ## Esquema das Classes - Cor do Ground truth:
 
-1. Aliados(Mario, Luigi, Toad e Lakitu Cameraman): 0
-2. Inimigos: 1
-3. Perigos(bolas de canhão, bombas e obstáculos): 2
-4. Mobilidade(canos, plataformas e árvores): 3
-5. Itens Valiosos(moedas, estrelas e baús): 4
+1. Mario: 0 - <span style="color: lime;"> Verde Puro </span>
+2. Goomba: 1 - <span style="color: red;"> Vermelho Puro </span>
+3. Chain Chomp : 2 - <span style="color: crimson;"> Carmesin (220, 20, 60) </span>
+3. Bobomb: 3
+4. Bobomb king: 4
+5. Thwomp: 5
+6. Womp: 6
+7. Piranha: 7
 
 [Videos para gerar o dataset](https://drive.google.com/drive/folders/1dxONE6dlFmab1Wi-a1rzSDJgk1iFns5s?usp=sharing)
