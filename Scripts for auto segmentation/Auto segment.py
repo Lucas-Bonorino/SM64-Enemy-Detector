@@ -63,27 +63,31 @@ Mario_Dir=['mario', 'mario_cap']
 Mario_Color=[0, 255, 0, 255]
 
 Goomba_Dir=['goomba']
-Goomba_Color=[114, 128, 250, 255]
+Goomba_Color=[0, 0, 255, 255]
 
-Chain_Chomp_Dir=['chain_chomp', 'chain_ball']
-Chain_Chomp_Color=[60, 20, 220, 255]
+Chain_Chomp_Dir=['chain_chomp']
+Chain_Chomp_Color=[127, 0, 127, 255]
+
+Bobomb_Dir=['bobomb']
+Bobomb_Color=[0, 255, 255,255]
 
 Bobomb_king_Dir=['king_bobomb']
-Bobomb_king_Color=[0, 0, 255, 255]
+Bobomb_king_Color=[255, 0, 0, 255]
 
 Thwomp_Dir=['thwomp']
-Thwomp_Color=[0,0,138, 255]
+Thwomp_Color=[127,127,0, 255]
 
 Whomp_Dir=['whomp']
-Whomp_Color=[34,34,178,255]
+Whomp_Color=[0,0,127,255]
 
 Piranha_Dir=['piranha_plant']
-Piranha_Color=[42,42,165, 255]
+Piranha_Color=[255,255,0, 255]
 
-directories=[neutral_directories, Mario_Dir, Goomba_Dir, Chain_Chomp_Dir, Bobomb_king_Dir, Thwomp_Dir, Whomp_Dir, Piranha_Dir]
-colors=[neutral_color, Mario_Color, Goomba_Color, Chain_Chomp_Color, Bobomb_king_Color, Thwomp_Color, Whomp_Color, Piranha_Color]
+directories=[neutral_directories, Mario_Dir,Bobomb_Dir, Goomba_Dir, Chain_Chomp_Dir, Bobomb_king_Dir, Thwomp_Dir, Whomp_Dir, Piranha_Dir]
+colors=[neutral_color, Mario_Color,Bobomb_Color, Goomba_Color, Chain_Chomp_Color, Bobomb_king_Color, Thwomp_Color, Whomp_Color, Piranha_Color]
 
 directories_and_colors=list(zip(directories, colors))
+
 
 for directory, color in directories_and_colors:
     Color_Correction(directory, color)
