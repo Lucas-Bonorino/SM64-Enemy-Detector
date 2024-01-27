@@ -12,7 +12,7 @@ ACCEPTABLE_DETECTION_HIGHER_THRESHOLD=700 * 400
 ACCEPTABLE_HEIGHT_WIDTH_RATION=0.2
 MAX_CLASSES = 8
 
-
+    
 def filter_marios(BBoxes):
     mario_BBoxes=BBoxes
 
@@ -29,20 +29,22 @@ def filter_marios(BBoxes):
     return(mario_BBoxes)
 
 def Initialize_data_frame():
-    data={'filename':[], 'class':[], 'xmin':[], 'ymin':[], 'xmax':[], 'ymax':[]}
+    data={'filename':[], 'bounding_boxes':[]}
 
     return(pd.DataFrame(data))
 
-def Create_DataFrame_Row(bbox, image, image_name, class_num):
-    height, width=image.shape[:2]
-    x,y,bb_width,bb_height=bbox
-    data={'filename':[image_name], 'class':[class_num], 'xmin':[x], 'ymin':[y], 'xmax':[x+bb_width], 'ymax':[y+bb_height]}
+
+def Create_DataFrame_Row(bboxes, image_name, classes):
+   
+    BBOX_Data={'boxes':bboxes, 'classes':classes}
+    data={'filename':image_name, 'bounding_boxes': BBOX_Data}
     
     return(pd.DataFrame(data))
 
 
 def Calculate_BBoxes(segmented_image, image_name, bbox_data):
-    
+    Boxes=[]
+    Labels=[]
     for class_number in range(MAX_CLASSES):
 
         binary_image=np.where(segmented_image==class_number, 255, 0).astype(np.uint8)
@@ -62,8 +64,12 @@ def Calculate_BBoxes(segmented_image, image_name, bbox_data):
 
             if(height/width<ACCEPTABLE_HEIGHT_WIDTH_RATION) or (width/height<ACCEPTABLE_HEIGHT_WIDTH_RATION): continue
 
-            row=Create_DataFrame_Row(bounding_rectangle, segmented_image, image_name, class_number)
-            bbox_data=pd.concat([bbox_data, row], ignore_index=True)
+            Boxes.append(bounding_rectangle)
+            Labels.append(class_number)
+
+    if(len(Labels)>=1):
+        row=Create_DataFrame_Row(Boxes, image_name, Labels)
+        bbox_data=pd.concat([bbox_data, row], ignore_index=True)
 
     return(bbox_data)
 
@@ -102,6 +108,6 @@ def Create_Dataset(segmented_folder_name, unsegmented_folder_name):
     BBox_list.to_csv("../Bounding Box Annotations ex.csv")
         
 if __name__=='__main__':
-    Create_Dataset('../MarioNet64_segmentation','../MarioNet64_Color')
+    Create_Dataset('..\\MarioNet64_segmentation','..\\MarioNet64_Color')
 
 

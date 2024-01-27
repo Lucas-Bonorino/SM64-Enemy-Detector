@@ -10,6 +10,7 @@ import tqdm
 import sys
 from math import floor
 import pandas as pd
+import ast
 
 
 class_ids =['Mario', 'Goomba', 'Chain Chomp', 'Bobomb', 'Bobomb King', 'Twhomp', 'Whomp', 'Piranha']
@@ -48,6 +49,13 @@ def visualize_dataset(inputs, value_range, rows, cols, bounding_box_format):
         class_mapping=class_mapping,
     )
 
+def Progres_bar(i, num):
+    sys.stdout.write('\r' + ' ' * 70 + '\r')
+    sys.stdout.flush()
+    progress=(i/num)
+    Bar_Progress=floor(progress*30)
+    Remaining_Bar=30-Bar_Progress
+    print('['+Bar_Progress*'='+' '*Remaining_Bar+']'+str(100*progress)+'% concluido',end='', flush=True)
 
 def Unpack_Raw_Format(Data, bb_format):
     image = Data['images']
@@ -63,52 +71,41 @@ def Unpack_Raw_Format(Data, bb_format):
 
 def Data_Loader(annotation_file):
     data=pd.read_csv(annotation_file)
+    data=data.drop('Unnamed: 0', axis=1, errors='ignore')
+
     data_groups=data.groupby('filename')
-
     Dataset={'images':[], 'bounding_boxes':[]}
-
-    ngroups=data_groups.ngroups
+    
+    ngroups=len(data_groups)
     i=0
+    for image_name, groups in data_groups:
+        image=load_img(image_name, target_size=(224, 224))
+    
+        rows=[]
+        for _, row in groups.iterrows():
+            rows.append(row['bounding_boxes'])
 
-    for image_name, group in data_groups:
-        i+=1
-        
-        BBoxes={'classes': [], 'boxes':[]}
-        for _, row in group.iterrows():
-            BBoxes['boxes'].append(Get_BBOX(row))
-            BBoxes['classes'].append(class_ids.index(row['class']))
+        boxes_coords=ast.literal_eval(rows[0])
+        boxes_classes=ast.literal_eval(rows[1])
 
-        Dataset['bounding_boxes'].append(BBoxes)
-        image=load_img(image_name,(224, 224))
+        BBox_Data_Per_image={'boxes':boxes_coords, 'classes':boxes_classes}
         Dataset['images'].append(image)
-       
-        sys.stdout.write('\r' + ' ' * 70 + '\r')
-        sys.stdout.flush()
-        progress=(i/ngroups)
-        Bar_Progress=floor(progress*30)
-        Remaining_Bar=30-Bar_Progress
-        print('['+Bar_Progress*'='+' '*Remaining_Bar+']'+str(100*progress)+'% concluido',end='', flush=True)
+        Dataset['bounding_boxes'].append(BBox_Data_Per_image)
 
-        if(100*progress>1): break
-    
-    
+        i+=1
+        Progres_bar(i,ngroups)
+
+        if(i/ngroups>0.005):break
+
     Dataset=tf.data.Dataset.from_tensor_slices(Dataset)
-
-    print('\n')
- 
+    
     return(Dataset)
 
 if __name__=='__main__':
-    Dataset=Data_Loader('Bounding Box Annotations.csv')
- 
-    Dataset=Dataset.map(lambda x: Unpack_Raw_Format(x ,'xyxy'))
+    Dataset=Data_Loader('../Bounding Box Annotations ex.csv')
 
-    Dataset=Dataset.ragged_batch(5)
-    print(Dataset)
-    visualize_dataset(Dataset, bounding_box_format="xyxy", value_range=(0, 255), rows=2, cols=2)
+    #Dataset=Dataset.map(lambda x: Unpack_Raw_Format(x ,'xyxy'))
 
-
-
-
-{"train": [{"input": [[3, 1, 2], [3, 1, 2], [3, 1, 2]], "output": [[4, 5, 6], [4, 5, 6], [4, 5, 6]]}, 
-           {"input": [[2, 3, 8], [2, 3, 8], [2, 3, 8]], "output": [[6, 4, 9], [6, 4, 9], [6, 4, 9]]}]}
+    #Dataset=Dataset.ragged_batch(5)
+    #print(Dataset)
+    #visualize_dataset(Dataset, bounding_box_format="xyxy", value_range=(0, 255), rows=2, cols=2)
