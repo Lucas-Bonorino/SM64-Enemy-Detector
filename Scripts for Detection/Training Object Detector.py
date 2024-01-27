@@ -51,6 +51,7 @@ def visualize_dataset(inputs, value_range, rows, cols, bounding_box_format):
 
 def Unpack_Raw_Format(Data, bb_format):
     image = Data['images']
+
     boxes = keras_cv.bounding_box.convert_format(Data['bounding_boxes']['boxes'], images=image, source='xyxy', target=bb_format)
 
     bounding_boxes = {
@@ -65,6 +66,7 @@ def Data_Loader(annotation_file):
     data_groups=data.groupby('filename')
 
     Dataset={'images':[], 'bounding_boxes':[]}
+
     ngroups=data_groups.ngroups
     i=0
 
@@ -76,12 +78,10 @@ def Data_Loader(annotation_file):
             BBoxes['boxes'].append(Get_BBOX(row))
             BBoxes['classes'].append(class_ids.index(row['class']))
 
-       
-        Dataset['bounding_boxes'].append(tf.data.Dataset.from_tensor_slices(BBoxes))
+        Dataset['bounding_boxes'].append(BBoxes)
         image=load_img(image_name,(224, 224))
-        Dataset['images'].append(tf.constant(image))
-    
-    
+        Dataset['images'].append(image)
+       
         sys.stdout.write('\r' + ' ' * 70 + '\r')
         sys.stdout.flush()
         progress=(i/ngroups)
@@ -90,17 +90,18 @@ def Data_Loader(annotation_file):
         print('['+Bar_Progress*'='+' '*Remaining_Bar+']'+str(100*progress)+'% concluido',end='', flush=True)
 
         if(100*progress>1): break
-
-    Dataset=tf.data.Dataset.from_tensor_slices(Dataset)
     
-    print('\n')
+    
+    Dataset=tf.data.Dataset.from_tensor_slices(Dataset)
 
+    print('\n')
+ 
     return(Dataset)
 
 if __name__=='__main__':
     Dataset=Data_Loader('Bounding Box Annotations.csv')
-    
-    Dataset=Dataset.flat_map(lambda x: Unpack_Raw_Format(x ,'xyxy'))
+ 
+    Dataset=Dataset.map(lambda x: Unpack_Raw_Format(x ,'xyxy'))
 
     Dataset=Dataset.ragged_batch(5)
     print(Dataset)
@@ -109,3 +110,5 @@ if __name__=='__main__':
 
 
 
+{"train": [{"input": [[3, 1, 2], [3, 1, 2], [3, 1, 2]], "output": [[4, 5, 6], [4, 5, 6], [4, 5, 6]]}, 
+           {"input": [[2, 3, 8], [2, 3, 8], [2, 3, 8]], "output": [[6, 4, 9], [6, 4, 9], [6, 4, 9]]}]}
