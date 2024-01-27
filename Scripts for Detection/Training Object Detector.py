@@ -57,7 +57,7 @@ def Progres_bar(i, num):
 
 def Unpack_Raw_Format(Images, Boxes, bb_format):
     image = Images
-  
+    print(image)
     boxes = keras_cv.bounding_box.convert_format(Boxes['boxes'], images=image, source='xywh', target=bb_format)
     print(Boxes['classes'])
     bounding_boxes = {
@@ -87,9 +87,9 @@ def Data_Loader(annotation_file):
         boxes_classes=ast.literal_eval(rows[1])
 
         BBox_Data_Per_image={'boxes':boxes_coords, 'classes':boxes_classes}
-        Dataset['images'].append(tf.data.Dataset.from_tensor_slices(image))
+        Dataset['images'].append(tf.data.Dataset.from_tensors(image))
         Dataset['bounding_boxes'].append(tf.data.Dataset.from_tensor_slices(BBox_Data_Per_image))
-
+     
         i+=1
         Progres_bar(i,ngroups)
 
@@ -103,7 +103,7 @@ def Data_Loader(annotation_file):
         Built_DBI=Built_DBI.concatenate(Dataset['images'][i])
     
     Dataset=tf.data.Dataset.zip((Built_DBI, Built_DBB))
-    #Dataset=tf.data.Dataset.from_tensor_slices((Dataset['images'], Dataset['bounding_boxes']))
+
     print('\n')
     return(Dataset)
 
