@@ -64,6 +64,8 @@ def Calculate_BBoxes(segmented_image, image_name, bbox_data):
 
             if(height/width<ACCEPTABLE_HEIGHT_WIDTH_RATION) or (width/height<ACCEPTABLE_HEIGHT_WIDTH_RATION): continue
 
+
+
             Boxes.append(bounding_rectangle)
             Labels.append(class_number)
 

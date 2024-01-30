@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import ImageGrid
 import matplotlib.gridspec as gridspec
 
+
 class_ids =['Mario', 'Goomba', 'Chain Chomp', 'Bobomb', 'Bobomb King', 'Twhomp', 'Whomp', 'Piranha']
 class_mapping = dict(zip(range(len(class_ids)), class_ids))
 

@@ -1,0 +1,7 @@
+bob: 0.85
+goomba: 0.75
+chomp:3.2
+king: 2.2
+pirana: 1.5
+thwomp cubo:2.85
+thwomp retangulo:3.5
